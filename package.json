@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bcrypt": "^3.0.8",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.8.12"
   },
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon -r dotenv/config index.js",
     "test": "jest --runInBand"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
@@ -19,13 +20,14 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.6.0",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.6.0",
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.19.4",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2"
   }
