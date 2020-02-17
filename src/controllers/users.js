@@ -9,6 +9,6 @@ exports.create = (req, res) => {
   });
 
   user.save().then(() => {
-    return res.status(201).json(user);
+    return res.status(201).json(user.sanitise());
   });
 };

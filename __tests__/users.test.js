@@ -37,6 +37,7 @@ describe('/users', () => {
             expect(user.email).toBe('rui@correia.co');
             expect(user.password).not.toBe('123');
             expect(user.password.length).toBe(60);
+            expect(res.body).not.toHaveProperty('password');
             done();
           });
         });
