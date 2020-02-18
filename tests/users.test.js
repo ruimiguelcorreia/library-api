@@ -55,9 +55,9 @@ describe('/users', () => {
     });
 
     it('checks if the provided email is valid', done => {
-      request(app)
-        .post('/users')
-        .send({ firstName: 'Rui', lastName: 'Correia', email: 'ruicorreia', password: '12345678' })
+      const data = dataFactory.user({ email: 'ruicorreia' });
+      userHelper
+        .signUp(app, data)
         .then(res => {
           expect(res.status).toBe(400);
           expect(res.body.errors.email).toBe('Invalid email address.');
@@ -67,23 +67,20 @@ describe('/users', () => {
           });
 
           done();
-        });
+        })
+        .catch(error => done(error));
     });
 
     it('checks if the provided password is valid', done => {
-      request(app)
-        .post('/users')
-        .send({
-          firstName: 'Rui',
-          lastName: 'Correia',
-          email: 'rui@correia.com',
-          password: '1234567',
-        })
+      const data = dataFactory.user({ password: 'passwor' });
+      userHelper
+        .signUp(app, data)
         .then(res => {
           expect(res.status).toBe(400);
           expect(res.body.errors.password).toBe('Password must be at least 8 characters long.');
           done();
-        });
+        })
+        .catch(error => done(error));
     });
   });
 });
