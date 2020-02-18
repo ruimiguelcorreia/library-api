@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 const bycrypt = require('bcrypt');
+const isEmail = require('isemail');
 
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
-  email: String,
-  password: String,
+  email: {
+    type: String,
+    validate: [isEmail.validate, 'Invalid email address.'],
+  },
+  password: {
+    type: String,
+    minlength: [8, 'Password must be at least 8 characters long.'],
+  },
 });
 
 userSchema.pre('save', function encryptPaswword(next) {
