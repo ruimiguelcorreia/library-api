@@ -2,6 +2,8 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../src/app');
 const User = require('../src/models/user');
+const userHelper = require('./helpers/user-helpers');
+const dataFactory = require('./helpers/data-factory');
 
 describe('/users', () => {
   beforeAll(done => {
@@ -19,6 +21,14 @@ describe('/users', () => {
     });
   });
 
+  // beforeEach(done => {
+  //   const user = dataFactory.user();
+  //   userHelper.signUp(user).then(() => {
+  //     userHelper.login(user);
+  //     done();
+  //   });
+  // });
+
   afterAll(done => {
     mongoose.connection.close();
     done();
@@ -26,26 +36,22 @@ describe('/users', () => {
 
   describe('POST /users', () => {
     it('creates a new user', done => {
-      request(app)
-        .post('/users')
-        .send({
-          firstName: 'Rui',
-          lastName: 'Correia',
-          email: 'rui@correia.co',
-          password: '12345678',
-        })
+      const data = dataFactory.user();
+      userHelper
+        .signUp(app, data)
         .then(res => {
           expect(res.status).toBe(201);
           User.findById(res.body._id, (_, user) => {
-            expect(user.firstName).toBe('Rui');
-            expect(user.lastName).toBe('Correia');
-            expect(user.email).toBe('rui@correia.co');
+            expect(user.firstName).toBe(data.firstName);
+            expect(user.lastName).toBe(data.lastName);
+            expect(user.email).toBe(data.email);
             expect(user.password).not.toBe('12345678');
             expect(user.password.length).toBe(60);
             expect(res.body).not.toHaveProperty('password');
             done();
           });
-        });
+        })
+        .catch(error => done(error));
     });
 
     it('checks if the provided email is valid', done => {
